@@ -1,0 +1,36 @@
+h2 {
+  color: #032a96;
+  font-size: 25px;
+}
+
+.example-chip-list {
+  width: 100%;
+  min-height: 100px;
+}
+
+.mat-chip {
+  border: 1px solid gray;
+  background-color: white;
+}
+
+.mat-chip::after{
+  background-color:inherit!important;
+}
+
+button.buttonGenerate {
+  border-radius: 0.8rem;
+  padding: 1rem;
+  font-size: 1rem;
+  padding: .3rem 3rem;
+  color: white;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #003399, #003399);
+}
+
+button.buttonEdit {
+  background-color: #0396FF;
+}
+
+button.buttonDownload {
+  background-color: black;
+}
+

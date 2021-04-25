@@ -1,0 +1,165 @@
+<div *ngIf="!isEdit" class="container">
+  <br>
+  <br>
+  <div class="text-center">
+    <h2>ENTER FACIAL ATTRIBUTES OF A FACE</h2>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8  text-center">
+          <mat-form-field class="example-chip-list width-100-percent" appearance="outline">
+            <mat-chip-list #chipList>
+              <mat-chip
+                *ngFor="let attribute of facialAttributes"
+                [selectable]="selectable"
+                [removable]="removable"
+                (removed)="remove(attribute)">
+                {{attribute}}
+                <mat-icon matChipRemove *ngIf="removable" [ngStyle]="{'color':'#0396ff'}">cancel</mat-icon>
+              </mat-chip>
+              <input
+                #facialInput
+                [formControl]="facialCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let attribute of filteredAttributes | async" [value]="attribute">
+                {{attribute}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        <br>
+        <button class="buttonGenerate" mat-raised-button (click)="generateImage()">GENERATE FACE</button>
+      </div>
+    </div>
+    <br>
+    <div *ngIf="!enableImages">
+      <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+    </div>
+    <div *ngIf="enableImages" class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div style="margin-top: 20px" class="row text-right">
+          <div *ngIf="img1" class="col-md-3">
+            <img  style="width: 98%" [src]="img1" alt="">
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 67%</strong></p>
+            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
+            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+          </div>
+          <div *ngIf="img2" class="col-md-3">
+            <img style="width: 98%" [src]="img2" alt="">
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 52%</strong></p>
+            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
+            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+          </div>
+          <div *ngIf="img3" class="col-md-3">
+            <img style="width: 98%" [src]="img3" alt="">
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 62%</strong></p>
+            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
+            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+          </div>
+          <div *ngIf="img4" class="col-md-3">
+            <img style="width: 98%" [src]="img4" alt="">
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 75%</strong></p>
+            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
+            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isEdit">
+  <div class="container">
+    <div class="text-center text-warning mt-3">
+      <h2 style="margin-top: 40px">EDIT FACIAL ATTRIBUTES</h2>
+    </div>
+    <hr style="margin-top: 30px">
+    <div class="row mt-3">
+      <div class="col-md-7">
+        <mat-card>
+          <mat-card-content>
+            <p> <strong>Age</strong></p>
+            <mat-slider style="width: 100%"
+                        class="edit-margin"
+                        [max]="100"
+                        [min]="0"
+                        [step]="1"
+                        color="primary"
+                        [thumbLabel]="true"
+                        [(ngModel)]="value1">
+            </mat-slider>
+            <p> <strong>Gender</strong></p>
+            <mat-slider style="width: 100%"
+                        class="edit-margin"
+                        [max]="100"
+                        [min]="0"
+                        [step]="1"
+                        color="primary"
+                        [thumbLabel]="true"
+                        [(ngModel)]="value2">
+            </mat-slider>
+            <p> <strong>Pose</strong></p>
+            <mat-slider style="width: 100%"
+                        class="edit-margin"
+                        [max]="100"
+                        [min]="0"
+                        [step]="1"
+                        color="primary"
+                        [thumbLabel]="true"
+                        [(ngModel)]="value3">
+            </mat-slider>
+            <p> <strong>Smile</strong></p>
+            <mat-slider style="width: 100%"
+                        class="edit-margin"
+                        [max]="100"
+                        [min]="0"
+                        [step]="1"
+                        color="primary"
+                        [thumbLabel]="true"
+                        [(ngModel)]="value4">
+            </mat-slider>
+            <p> <strong>Eyeglasses</strong></p>
+            <mat-slider style="width: 100%"
+                        class="edit-margin"
+                        [max]="100"
+                        [min]="0"
+                        [step]="1"
+                        color="primary"
+                        [thumbLabel]="true"
+                        [(ngModel)]="value5">
+            </mat-slider>
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+      <div class="col-md-5">
+        <mat-card>
+          <mat-card-content>
+            <div class="">
+              <img style="width: 97%" src="./assets/sample_images/face.jpeg" alt="">
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
