@@ -1,13 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ImageServiceService} from '../../services/image-service.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ImageServiceService } from '../../services/image-service.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import {DataService} from '../../services/data.service';
-import {Observable} from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {ENTER, COMMA} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {map, startWith} from 'rxjs/operators';
+import { DataService } from '../../services/data.service';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-generate-face',
@@ -17,8 +17,8 @@ import {map, startWith} from 'rxjs/operators';
 export class GenerateFaceComponent implements OnInit {
 
   constructor(private imageService: ImageServiceService,
-              private sanitizer: DomSanitizer,
-              private dataService: DataService) {
+    private sanitizer: DomSanitizer,
+    private dataService: DataService) {
     this.filteredAttributes = this.facialCtrl.valueChanges.pipe(
       startWith(null),
       map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFacialAttributes.slice()));
@@ -36,7 +36,8 @@ export class GenerateFaceComponent implements OnInit {
   value3: number;
   value4: number;
   value5: number;
-
+  selected_latentCode: number;
+  isEditing = false;
   visible = true;
   selectable = true;
   removable = true;
@@ -53,6 +54,7 @@ export class GenerateFaceComponent implements OnInit {
   @ViewChild('facialInput') facialInput: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
+
   }
 
   add(event: MatChipInputEvent): void {
@@ -100,20 +102,49 @@ export class GenerateFaceComponent implements OnInit {
     this.img4 = false;
     this.imageService.generateImage().subscribe(data => {
       this.data = data;
-      this.img1 = 'http://localhost:8000/static/' + data.data[0];
-      this.img2 = 'http://localhost:8000/static/' + data.data[1];
-      this.img3 = 'http://localhost:8000/static/' + data.data[2];
-      this.img4 = 'http://localhost:8000/static/' + data.data[3];
+      this.img1 = 'http://localhost:8000/static/' + data.data[0]
+      this.img2 = 'http://localhost:8000/static/' + data.data[1]
+      this.img3 = 'http://localhost:8000/static/' + data.data[2]
+      this.img4 = 'http://localhost:8000/static/' + data.data[3]
       this.enableImages = true;
     }, error => {
-      console.log(error);
-    });
+      console.log(error)
+    })
+    this.value1 = 50;
+    this.value2 = 50;
+    this.value3 = 50;
+    this.value4 = 50;
+    this.value5 = 50;
   }
 
-  editImage(number){
+  editImage(number) {
     this.isEdit = true;
-    const latent_code = this.data.latent_codes[number];
-    this.imageService.editImage({code: latent_code});
+    let latent_code = this.data.latent_codes[number]
+    let formdata = new FormData();
+    let params = [this.value1, this.value2, this.value3, this.value4, this.value5]
+    formdata.append('code', latent_code)
+    formdata.append('params', JSON.stringify(params))
+    this.imageService.editImage(formdata).subscribe(data => {
+      console.log(data)
+    })
+    this.selected_latentCode = number;
+  }
+
+  goBack() {
+    this.isEdit = false
+  }
+
+  applyChanges() {
+    this.isEditing = true;
+    let latent_code = this.data.latent_codes[this.selected_latentCode]
+    let params = [this.value1, this.value2, this.value3, this.value4, this.value5]
+    let formdata = new FormData();
+    formdata.append('code', latent_code)
+    formdata.append('params', JSON.stringify(params))
+    this.imageService.editImage(formdata).subscribe(data => {
+      console.log(data)
+      this.isEditing = false;
+    })
   }
 
 }

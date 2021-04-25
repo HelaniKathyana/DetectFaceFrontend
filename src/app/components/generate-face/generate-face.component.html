@@ -1,85 +1,166 @@
 <div *ngIf="!isEdit" class="container">
-  <br>
-  <br>
+  <br />
+  <br />
   <div class="text-center">
     <h2>ENTER FACIAL ATTRIBUTES OF A FACE</h2>
-    <br>
+    <br />
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-8  text-center">
-          <mat-form-field class="example-chip-list width-100-percent" appearance="outline">
-            <mat-chip-list #chipList>
-              <mat-chip
-                *ngFor="let attribute of facialAttributes"
-                [selectable]="selectable"
-                [removable]="removable"
-                (removed)="remove(attribute)">
-                {{attribute}}
-                <mat-icon matChipRemove *ngIf="removable" [ngStyle]="{'color':'#0396ff'}">cancel</mat-icon>
-              </mat-chip>
-              <input
-                #facialInput
-                [formControl]="facialCtrl"
-                [matAutocomplete]="auto"
-                [matChipInputFor]="chipList"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                [matChipInputAddOnBlur]="addOnBlur"
-                (matChipInputTokenEnd)="add($event)">
-            </mat-chip-list>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-              <mat-option *ngFor="let attribute of filteredAttributes | async" [value]="attribute">
-                {{attribute}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        <br>
-        <button class="buttonGenerate" mat-raised-button (click)="generateImage()">GENERATE FACE</button>
+      <div class="col-md-8 text-center">
+        <mat-form-field
+          class="example-chip-list width-100-percent"
+          appearance="outline"
+        >
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let attribute of facialAttributes"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(attribute)"
+            >
+              {{ attribute }}
+              <mat-icon
+                matChipRemove
+                *ngIf="removable"
+                [ngStyle]="{ color: '#0396ff' }"
+                >cancel</mat-icon
+              >
+            </mat-chip>
+            <input
+              #facialInput
+              [formControl]="facialCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <mat-option
+              *ngFor="let attribute of filteredAttributes | async"
+              [value]="attribute"
+            >
+              {{ attribute }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <br />
+        <button
+          class="buttonGenerate"
+          mat-raised-button
+          (click)="generateImage()"
+        >
+          GENERATE FACE
+        </button>
       </div>
     </div>
-    <br>
+    <br />
     <div *ngIf="!enableImages">
       <div class="d-flex justify-content-center mt-5">
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
-
     </div>
     <div *ngIf="enableImages" class="row">
       <div class="col-md-2"></div>
       <div class="col-md-8">
         <div style="margin-top: 20px" class="row text-right">
           <div *ngIf="img1" class="col-md-3">
-            <img  style="width: 98%" [src]="img1" alt="">
-            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 67%</strong></p>
-            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
-              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
-            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
-              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+            <img style="width: 98%" [src]="img1" alt="" />
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
+              <strong>Accuracy: 67%</strong>
+            </p>
+            <button
+              class="buttonEdit"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+              (click)="editImage(0)"
+            >
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
+            </button>
+            <button
+              class="buttonDownload"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+            >
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
+            </button>
           </div>
           <div *ngIf="img2" class="col-md-3">
-            <img style="width: 98%" [src]="img2" alt="">
-            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 52%</strong></p>
-            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
-              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
-            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
-              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+            <img style="width: 98%" [src]="img2" alt="" />
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
+              <strong>Accuracy: 52%</strong>
+            </p>
+            <button
+              class="buttonEdit"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+              (click)="editImage(1)"
+            >
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
+            </button>
+            <button
+              class="buttonDownload"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+            >
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
+            </button>
           </div>
           <div *ngIf="img3" class="col-md-3">
-            <img style="width: 98%" [src]="img3" alt="">
-            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 62%</strong></p>
-            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
-              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
-            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
-              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+            <img style="width: 98%" [src]="img3" alt="" />
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
+              <strong>Accuracy: 62%</strong>
+            </p>
+            <button
+              class="buttonEdit"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+              (click)="editImage(2)"
+            >
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
+            </button>
+            <button
+              class="buttonDownload"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+            >
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
+            </button>
           </div>
           <div *ngIf="img4" class="col-md-3">
-            <img style="width: 98%" [src]="img4" alt="">
-            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px"><strong>Accuracy: 75%</strong></p>
-            <button class="buttonEdit" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary" (click)="editImage(0)">
-              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT</button>
-            <button class="buttonDownload" style="width: 100%; margin-top: 4px;" mat-raised-button color="primary">
-              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD</button>
+            <img style="width: 98%" [src]="img4" alt="" />
+            <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
+              <strong>Accuracy: 75%</strong>
+            </p>
+            <button
+              class="buttonEdit"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+              (click)="editImage(3)"
+            >
+              <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
+            </button>
+            <button
+              class="buttonDownload"
+              style="width: 100%; margin-top: 4px"
+              mat-raised-button
+              color="primary"
+            >
+              <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
+            </button>
           </div>
         </div>
       </div>
@@ -92,70 +173,146 @@
     <div class="text-center text-warning mt-3">
       <h2 style="margin-top: 40px">EDIT FACIAL ATTRIBUTES</h2>
     </div>
-    <hr style="margin-top: 30px">
+    <hr style="margin-top: 30px" />
     <div class="row mt-3">
       <div class="col-md-7">
         <mat-card>
           <mat-card-content>
-            <p> <strong>Age</strong></p>
-            <mat-slider style="width: 100%"
-                        class="edit-margin"
-                        [max]="100"
-                        [min]="0"
-                        [step]="1"
-                        color="primary"
-                        [thumbLabel]="true"
-                        [(ngModel)]="value1">
+            <p>
+              <strong>Age ({{ value1 }} %)</strong>
+            </p>
+            <mat-slider
+              style="width: 100%"
+              class="edit-margin"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              color="primary"
+              [thumbLabel]="true"
+              [(ngModel)]="value1"
+            >
             </mat-slider>
-            <p> <strong>Gender</strong></p>
-            <mat-slider style="width: 100%"
-                        class="edit-margin"
-                        [max]="100"
-                        [min]="0"
-                        [step]="1"
-                        color="primary"
-                        [thumbLabel]="true"
-                        [(ngModel)]="value2">
+            <p>
+              <strong>Gender ({{ value2 }} %)</strong>
+            </p>
+            <mat-slider
+              style="width: 100%"
+              class="edit-margin"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              color="primary"
+              [thumbLabel]="true"
+              [(ngModel)]="value2"
+            >
             </mat-slider>
-            <p> <strong>Pose</strong></p>
-            <mat-slider style="width: 100%"
-                        class="edit-margin"
-                        [max]="100"
-                        [min]="0"
-                        [step]="1"
-                        color="primary"
-                        [thumbLabel]="true"
-                        [(ngModel)]="value3">
+            <p>
+              <strong>Pose ({{ value3 }} %)</strong>
+            </p>
+            <mat-slider
+              style="width: 100%"
+              class="edit-margin"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              color="primary"
+              [thumbLabel]="true"
+              [(ngModel)]="value3"
+            >
             </mat-slider>
-            <p> <strong>Smile</strong></p>
-            <mat-slider style="width: 100%"
-                        class="edit-margin"
-                        [max]="100"
-                        [min]="0"
-                        [step]="1"
-                        color="primary"
-                        [thumbLabel]="true"
-                        [(ngModel)]="value4">
+            <p>
+              <strong>Smile ({{ value4 }} %)</strong>
+            </p>
+            <mat-slider
+              style="width: 100%"
+              class="edit-margin"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              color="primary"
+              [thumbLabel]="true"
+              [(ngModel)]="value4"
+            >
             </mat-slider>
-            <p> <strong>Eyeglasses</strong></p>
-            <mat-slider style="width: 100%"
-                        class="edit-margin"
-                        [max]="100"
-                        [min]="0"
-                        [step]="1"
-                        color="primary"
-                        [thumbLabel]="true"
-                        [(ngModel)]="value5">
+            <p>
+              <strong>Eyeglasses ({{ value5 }} %)</strong>
+            </p>
+            <mat-slider
+              style="width: 100%"
+              class="edit-margin"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              color="primary"
+              [thumbLabel]="true"
+              [(ngModel)]="value5"
+            >
             </mat-slider>
+            <br />
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button
+                  class="buttonEdit"
+                  style="margin-top: 4px"
+                  mat-raised-button
+                  color="primary"
+                  (click)="goBack()"
+                >
+                  Back
+                </button>
+                <button
+                  class="buttonEdit"
+                  style="margin-top: 4px; margin-left: 5px; margin-right: 5px"
+                  mat-raised-button
+                  color="primary"
+                  (click)="applyChanges()"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
-
       </div>
+      <br /><br />
       <div class="col-md-5">
-        <mat-card>
+        <div *ngIf="isEditing">
+          <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <mat-card *ngIf="!isEditing">
           <mat-card-content>
             <div class="">
-              <img style="width: 97%" src="./assets/sample_images/face.jpeg" alt="">
+              <img
+                style="width: 97%"
+                src="http://localhost:8000/static/edited.png"
+                alt=""
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button
+                  class="buttonEdit"
+                  style="margin-top: 4px"
+                  mat-raised-button
+                  color="primary"
+                  (click)="editImage(3)"
+                >
+                  Download
+                </button>
+                <button
+                  class="buttonEdit"
+                  style="margin-top: 4px; margin-left: 5px; margin-right: 10px"
+                  mat-raised-button
+                  color="primary"
+                  (click)="editImage(3)"
+                >
+                  Print
+                </button>
+              </div>
             </div>
           </mat-card-content>
         </mat-card>
