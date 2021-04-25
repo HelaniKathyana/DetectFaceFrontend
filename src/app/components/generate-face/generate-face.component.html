@@ -193,7 +193,7 @@
             >
             </mat-slider>
             <p>
-              <strong>Gender ({{ value2 }} %)</strong>
+              <strong>Gender ({{ value2 }} %) Male</strong>
             </p>
             <mat-slider
               style="width: 100%"
@@ -286,11 +286,7 @@
         <mat-card *ngIf="!isEditing">
           <mat-card-content>
             <div class="">
-              <img
-                style="width: 97%"
-                src="http://localhost:8000/static/edited.png"
-                alt=""
-              />
+              <img style="width: 97%" [src]="editImageUrl" alt="" />
             </div>
             <div class="row">
               <div class="col-md-12 text-right">

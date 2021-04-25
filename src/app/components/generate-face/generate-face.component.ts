@@ -29,6 +29,7 @@ export class GenerateFaceComponent implements OnInit {
   img2: any;
   img3: any;
   img4: any;
+  editImageUrl: any;
   enableImages = true;
   value: number;
   value1: number;
@@ -110,24 +111,18 @@ export class GenerateFaceComponent implements OnInit {
     }, error => {
       console.log(error)
     })
+  }
+
+  editImage(number) {
+    this.editImageUrl = 'http://localhost:8000/static/' + this.data.data[number];
+    console.log(this.editImageUrl)
+    this.isEdit = true;
+    this.selected_latentCode = number;
     this.value1 = 50;
     this.value2 = 50;
     this.value3 = 50;
     this.value4 = 50;
     this.value5 = 50;
-  }
-
-  editImage(number) {
-    this.isEdit = true;
-    let latent_code = this.data.latent_codes[number]
-    let formdata = new FormData();
-    let params = [this.value1, this.value2, this.value3, this.value4, this.value5]
-    formdata.append('code', latent_code)
-    formdata.append('params', JSON.stringify(params))
-    this.imageService.editImage(formdata).subscribe(data => {
-      console.log(data)
-    })
-    this.selected_latentCode = number;
   }
 
   goBack() {
@@ -143,6 +138,7 @@ export class GenerateFaceComponent implements OnInit {
     formdata.append('params', JSON.stringify(params))
     this.imageService.editImage(formdata).subscribe(data => {
       console.log(data)
+      this.editImageUrl = 'http://localhost:8000/static/' + data.img_name;
       this.isEditing = false;
     })
   }
