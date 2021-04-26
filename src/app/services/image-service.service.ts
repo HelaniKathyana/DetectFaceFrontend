@@ -9,11 +9,17 @@ export class ImageServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  generateImage(): Observable<any> {
-    return this.httpClient.get(`http://localhost:8000/generate`)
+  generateImage(body: any): Observable<any> {
+    return this.httpClient.post(`http://localhost:8000/generate`, body)
   }
 
-  editImage(body:any): Observable<any> {
-    return this.httpClient.post(`http://localhost:8000/edit`, body )
+  editImage(body: any): Observable<any> {
+    return this.httpClient.post(`http://localhost:8000/edit`, body)
+  }
+
+  downloadImage(url: any): Observable<any> {
+    // @ts-ignore
+    console.log(url)
+    return this.httpClient.get(url, { responseType: 'blob' });
   }
 }

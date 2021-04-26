@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Attribute, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ImageServiceService } from '../../services/image-service.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataService } from '../../services/data.service';
@@ -8,6 +8,8 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map, startWith } from 'rxjs/operators';
+import { saveAs } from 'file-saver';
+
 
 @Component({
   selector: 'app-generate-face',
@@ -32,11 +34,11 @@ export class GenerateFaceComponent implements OnInit {
   editImageUrl: any;
   enableImages = true;
   value: number;
-  value1: number;
-  value2: number;
-  value3: number;
-  value4: number;
-  value5: number;
+  value1: number; // Age
+  value2: number; // Gender
+  value3: number; // Pose
+  value4: number; // Smile
+  value5: number; // EyeGlass
   selected_latentCode: number;
   isEditing = false;
   visible = true;
@@ -46,12 +48,11 @@ export class GenerateFaceComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   facialCtrl = new FormControl();
   filteredAttributes: Observable<string[]>;
-  facialAttributes: string[] = ['Arched_Eyebrows'];
-  allFacialAttributes: string[] = ['5_o_Clock_Shadow', 'Arched_Eyebrows', 'Attractive', 'Bags_Under_Eyes', 'Bald', 'Bangs', 'Big_Lips', 'Big_Nose',
-    'Black_Hair', 'Blond_Hair', 'Blurry', 'Brown_Hair', 'Bushy_Eyebrows', 'Chubby', 'Double_Chin', 'Eyeglasses', 'Goatee',
-    'Gray_Hair', 'Heavy_Makeup', 'High_Cheekbones', 'Male', 'Mouth_Slightly_Open', 'Mustache', 'Narrow_Eyes', 'No_Beard',
-    'Oval_Face', 'Pale_Skin', 'Pointy_Nose', 'Receding_Hairline', 'Rosy_Cheeks', 'Sideburns', 'Smiling', 'Straight_Hair',
-    'Wavy_Hair', 'Wearing_Earrings', 'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace', 'Wearing_Necktie', 'Young'];
+  facialAttributes: string[] = [];
+
+  allFacialAttributes: string[] = ['Arched_Eyebrows', 'Attractive',
+    'Black_Hair', 'Eyeglasses', 'Male', 'Female', 'Mouth_Slightly_Open', 'MouthClosed', 'LeftSided', 'RightSided', 'No_Beard', 'Beard',
+    'Oval_Face', 'Smiling', 'Young', 'MiddleAge', 'Older'];
   @ViewChild('facialInput') facialInput: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
@@ -91,17 +92,72 @@ export class GenerateFaceComponent implements OnInit {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
     return this.allFacialAttributes.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  setEditableAttributeValues() {
+    this.value1 = 50;
+    this.value2 = 50;
+    this.value3 = 50;
+    this.value4 = 50;
+    this.value5 = 50;
+    this.facialAttributes.forEach(attribute => {
+      if (attribute === 'Male') {
+        this.value2 = 85;
+        console.log("fired")
+      }
+      if (attribute === 'Female') {
+        this.value2 = 10;
+      }
+      if (attribute === 'Beard') {
+        this.value2 = 90;
+      }
+      if (attribute === 'No_Beard') {
+        this.value2 = 50;
+      }
+      if (attribute === 'Young') {
+        this.value1 = 10;
+      }
+      if (attribute === 'MiddleAge') {
+        this.value1 = 50;
+      }
+      if (attribute === 'Older') {
+        this.value1 = 80;
+      }
+      if (attribute === 'Eyeglasses') {
+        this.value5 = 80;
+      }
+      if (attribute === 'Smiling') {
+        this.value4 = 70;
+      }
+      if (attribute === 'Mouth_Slightly_Open') {
+        this.value4 = 95;
+      }
+      if (attribute === 'LeftSided') {
+        this.value3 = 20;
+      }
+      if (attribute === 'LeftSided') {
+        this.value3 = 75;
+      }
+      if (attribute === 'MouthClosed') {
+        this.value3 = 5;
+      }
+    })
   }
 
   generateImage(): void {
     this.enableImages = false;
-    this.img1 = false;
-    this.img2 = false;
-    this.img3 = false;
-    this.img4 = false;
-    this.imageService.generateImage().subscribe(data => {
+    this.setEditableAttributeValues()
+    // console.log(this.facialAttributes)
+    let params = [this.value1, this.value2, this.value3, this.value4, this.value5]
+    let formdata = new FormData();
+    formdata.append('params', JSON.stringify(params))
+
+    // this.img1 = false;
+    // this.img2 = false;
+    // this.img3 = false;
+    // this.img4 = false;
+    this.imageService.generateImage(formdata).subscribe(data => {
       this.data = data;
       this.img1 = 'http://localhost:8000/static/' + data.data[0]
       this.img2 = 'http://localhost:8000/static/' + data.data[1]
@@ -113,16 +169,21 @@ export class GenerateFaceComponent implements OnInit {
     })
   }
 
+  downloadImage(requesturl) {
+    // saveAs(requesturl, "image.jpg");
+    this.imageService.downloadImage(requesturl).subscribe(response => {
+      let blob: any = new Blob([response], { type: 'blob' });
+      const url = window.URL.createObjectURL(blob);
+      saveAs(blob, 'download.jpg');
+    }), error => console.log('Error downloading the file'),
+      () => console.info('File downloaded successfully');
+  }
+
   editImage(number) {
     this.editImageUrl = 'http://localhost:8000/static/' + this.data.data[number];
     console.log(this.editImageUrl)
     this.isEdit = true;
     this.selected_latentCode = number;
-    this.value1 = 50;
-    this.value2 = 50;
-    this.value3 = 50;
-    this.value4 = 50;
-    this.value5 = 50;
   }
 
   goBack() {
