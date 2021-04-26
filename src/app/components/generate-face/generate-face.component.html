@@ -73,7 +73,7 @@
           <div *ngIf="img1" class="col-md-3">
             <img style="width: 98%" [src]="img1" alt="" />
             <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
-              <strong>Accuracy: 67%</strong>
+              <!-- <strong>Accuracy: 67%</strong> -->
             </p>
             <button
               class="buttonEdit"
@@ -84,19 +84,24 @@
             >
               <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
             </button>
-            <button
+            <a
+              download="image1.jpg"
+              href="{{ img1 }}"
+              title="ImageName"
               class="buttonDownload"
               style="width: 100%; margin-top: 4px"
+              rel="noopener noreferrer"
+              target="_blank"
               mat-raised-button
               color="primary"
             >
               <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
-            </button>
+            </a>
           </div>
           <div *ngIf="img2" class="col-md-3">
             <img style="width: 98%" [src]="img2" alt="" />
             <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
-              <strong>Accuracy: 52%</strong>
+              <!-- <strong>Accuracy: 52%</strong> -->
             </p>
             <button
               class="buttonEdit"
@@ -107,19 +112,24 @@
             >
               <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
             </button>
-            <button
+            <a
+              download="image1.jpg"
+              href="{{ img2 }}"
+              title="ImageName"
               class="buttonDownload"
               style="width: 100%; margin-top: 4px"
+              rel="noopener noreferrer"
+              target="_blank"
               mat-raised-button
               color="primary"
             >
               <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
-            </button>
+            </a>
           </div>
           <div *ngIf="img3" class="col-md-3">
             <img style="width: 98%" [src]="img3" alt="" />
             <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
-              <strong>Accuracy: 62%</strong>
+              <!-- <strong>Accuracy: 62%</strong> -->
             </p>
             <button
               class="buttonEdit"
@@ -130,19 +140,24 @@
             >
               <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
             </button>
-            <button
+            <a
+              download="image1.jpg"
+              href="{{ img3 }}"
+              title="ImageName"
               class="buttonDownload"
               style="width: 100%; margin-top: 4px"
+              rel="noopener noreferrer"
+              target="_blank"
               mat-raised-button
               color="primary"
             >
               <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
-            </button>
+            </a>
           </div>
           <div *ngIf="img4" class="col-md-3">
             <img style="width: 98%" [src]="img4" alt="" />
             <p style="margin-top: 4px; margin-bottom: -3px; padding: 2px">
-              <strong>Accuracy: 75%</strong>
+              <!-- <strong>Accuracy: 75%</strong> -->
             </p>
             <button
               class="buttonEdit"
@@ -153,14 +168,19 @@
             >
               <mat-icon style="font-size: 20px">edit</mat-icon> EDIT
             </button>
-            <button
+            <a
+              download="image1.jpg"
+              href="{{ img4 }}"
+              title="ImageName"
               class="buttonDownload"
               style="width: 100%; margin-top: 4px"
+              rel="noopener noreferrer"
+              target="_blank"
               mat-raised-button
               color="primary"
             >
               <mat-icon style="font-size: 20px">file_download</mat-icon>DOWNLOAD
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -290,15 +310,19 @@
             </div>
             <div class="row">
               <div class="col-md-12 text-right">
-                <button
-                  class="buttonEdit"
-                  style="margin-top: 4px"
+                <a
+                  download="image1.jpg"
+                  href="{{ editImageUrl }}"
+                  title="ImageName"
+                  class="buttonDownload"
+                  style="width: 100%; margin-top: 4px"
+                  rel="noopener noreferrer"
+                  target="_blank"
                   mat-raised-button
                   color="primary"
-                  (click)="editImage(3)"
                 >
                   Download
-                </button>
+                </a>
                 <button
                   class="buttonEdit"
                   style="margin-top: 4px; margin-left: 5px; margin-right: 10px"
