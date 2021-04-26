@@ -30,7 +30,10 @@ button.buttonEdit {
   background-color: #0396FF;
 }
 
-button.buttonDownload {
+a:link, a:visited {
   background-color: black;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
 }
-
